@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:nasa_clean_arch/core/usecase/errors/failures.dart';
 import 'package:nasa_clean_arch/features/domain/entities/space_media_entity.dart';
 import 'package:nasa_clean_arch/features/domain/repositories/space_media_repository.dart';
 import 'package:nasa_clean_arch/features/domain/usecases/get_space_media_from_date_usecase.dart';
@@ -36,4 +37,15 @@ void main() {
       verify(() => repository.getSpaceMediaFromDate(tDate)).called(1);
     },
   );
+
+  test('should return a ServerFailure when don\'t succeed', () async {
+    // Arrange
+    when(() => repository.getSpaceMediaFromDate(tDate))
+        .thenAnswer((_) async => Left(ServerFailure()));
+    // Act
+    final result = await usecase(tDate);
+    // Assert
+    expect(result, Left(ServerFailure()));
+    verify(() => repository.getSpaceMediaFromDate(tDate)).called(1);
+  });
 }

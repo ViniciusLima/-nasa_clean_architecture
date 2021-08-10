@@ -19,7 +19,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mocktail: ^0.0.1-dev.11
+  mocktail: ^0.1.4
 
 flutter:
 
