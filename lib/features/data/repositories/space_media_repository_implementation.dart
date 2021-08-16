@@ -1,3 +1,4 @@
+import 'package:nasa_clean_arch/core/usecase/errors/exceptions.dart';
 import 'package:nasa_clean_arch/features/data/datasources/space_media_datasource.dart';
 import 'package:nasa_clean_arch/features/domain/entities/space_media_entity.dart';
 import 'package:nasa_clean_arch/core/usecase/errors/failures.dart';
@@ -15,7 +16,7 @@ class SpaceMediaRepositoryImplementation implements ISpaceMediaRepository {
     try {
       final result = await datasource.getSpaceMediaFromDate(date);
       return Right(result);
-    } on Exception {
+    } on ServerException {
       return Left(ServerFailure());
     }
   }
