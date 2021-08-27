@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:nasa_clean_arch/core/usecase/errors/exceptions.dart';
 import 'package:nasa_clean_arch/core/usecase/http_client/http_client.dart';
 import 'package:nasa_clean_arch/features/data/datasources/space_media_datasource.dart';
 import 'package:nasa_clean_arch/features/data/datasources/space_media_datasource_implementation.dart';
@@ -48,5 +49,15 @@ void main() {
     final result = await datasource.getSpaceMediaFromDate(tDateTime);
     // Assert
     expect(result, tSpaceMediaModel);
+  });
+
+  test('should throw a ServerException when the call is unccessful', () async {
+    // Arrange
+    when(() => client.get(any())).thenAnswer((_) async =>
+        HttpResponse(data: 'something went wrong', statusCode: 400));
+    // Act
+    final result = datasource.getSpaceMediaFromDate(tDateTime);
+    // Assert
+    expect(() => result, throwsA(ServerException()));
   });
 }
